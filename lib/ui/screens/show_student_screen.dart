@@ -1,33 +1,15 @@
-import 'package:database_student/data_repository/dbHelper.dart';
 import 'package:database_student/model/student_model.dart';
 import 'package:database_student/manager/student_manager.dart';
-import 'package:database_student/ui/screens/edit_student_screen.dart';
 import 'package:database_student/ui/screens/home_screen.dart';
+import 'package:database_student/ui/screens/new_and_edit_student_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'widgets/constants.dart';
 
-class ShowStudentScreen extends StatefulWidget {
+class ShowStudentScreen extends StatelessWidget {
   final StudentModel studentModel;
   const ShowStudentScreen({super.key, required this.studentModel});
-
-  @override
-  State<ShowStudentScreen> createState() => _ShowStudentScreenState();
-}
-
-class _ShowStudentScreenState extends State<ShowStudentScreen> {
-  void refresh() async {
-    final data = await DbHelper.dbHelper.getAllStudents();
-    setState(() {
-      StudentManager().allStudents = data;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    refresh();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,24 +20,19 @@ class _ShowStudentScreenState extends State<ShowStudentScreen> {
           InkWell(
             onTap: () {
               StudentManager studentManager = StudentManager();
-              studentManager.nameController.text = widget.studentModel.name;
-              studentManager.ageController.text =
-                  widget.studentModel.age.toString();
-              studentManager.addressController.text =
-                  widget.studentModel.address;
+              studentManager.nameController.text = studentModel.name;
+              studentManager.ageController.text = studentModel.age.toString();
+              studentManager.addressController.text = studentModel.address;
               studentManager.phoneNumberController.text =
-                  widget.studentModel.phoneNumber.toString();
-              studentManager.emailController.text = widget.studentModel.email;
+                  studentModel.phoneNumber.toString();
+              studentManager.emailController.text = studentModel.email;
 
-              studentManager.image = widget.studentModel.image!;
+              studentManager.image = studentModel.image!;
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      EditStudentScreen(studentModel: widget.studentModel),
-                ),
-              );
+              Get.to(() => NewAndEditStudentScreen(
+                    studentModel: studentModel,
+                    isEditing: true,
+                  ));
             },
             child: const Icon(Icons.edit),
           ),
@@ -75,14 +52,14 @@ class _ShowStudentScreenState extends State<ShowStudentScreen> {
                       actions: [
                         TextButton(
                             onPressed: () {
-                              StudentManager()
-                                  .deleteStudents(widget.studentModel);
-                              refresh();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const HomeScreen()));
+                              StudentManager().deleteStudents(studentModel);
+                              // refresh();
+                              Get.to(const HomeScreen());
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             const HomeScreen()));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
                                 content: Text('Delete succesfully'),
@@ -90,12 +67,18 @@ class _ShowStudentScreenState extends State<ShowStudentScreen> {
                                 margin: EdgeInsets.all(10),
                               ));
                             },
-                            child: const Text('Yes',style: TextStyle(color:kColor),)),
+                            child: const Text(
+                              'Yes',
+                              style: TextStyle(color: kColor),
+                            )),
                         TextButton(
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              Get.back();
                             },
-                            child: const Text('No',style: TextStyle(color:kColor),))
+                            child: const Text(
+                              'No',
+                              style: TextStyle(color: kColor),
+                            ))
                       ],
                     );
                   });
@@ -113,36 +96,38 @@ class _ShowStudentScreenState extends State<ShowStudentScreen> {
             Container(
               margin: const EdgeInsets.all(5),
               decoration: BoxDecoration(
-                color:kColor,
+                color: kColor,
                 borderRadius: BorderRadius.circular(5),
               ),
               height: 170,
-              child: widget.studentModel.image == null || widget.studentModel.image!.path.isEmpty
-                  ? const Center(
-                      child: CircleAvatar(
-                        radius: 40,
-                        backgroundImage:
-                            AssetImage('assets/images/blank profile.jpg'),
-                      ),
-                    )
-                  : Image.file(widget.studentModel.image!),
+              child:
+                  studentModel.image == null || studentModel.image!.path.isEmpty
+                      ? const Center(
+                          child: CircleAvatar(
+                            radius: 40,
+                            backgroundImage:
+                                AssetImage('assets/images/blank profile.jpg'),
+                          ),
+                        )
+                      : Image.file(studentModel.image!),
             ),
-          kHeight2,
+            kHeight2,
             Center(
               child: Text(
-                widget.studentModel.name,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                studentModel.name,
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
-          kHeight1,
+            kHeight1,
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 // width: 500,
                 // margin: EdgeInsets.symmetric(horizontal: 50),
                 decoration: BoxDecoration(
-                  color:kColor ,
+                  color: kColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(
@@ -152,25 +137,25 @@ class _ShowStudentScreenState extends State<ShowStudentScreen> {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(
-                      widget.studentModel.age.toString(),
-                      style: TextStyle(fontSize: 16),
+                      studentModel.age.toString(),
+                      style: const TextStyle(fontSize: 16),
                     )
                   ],
                 ),
               ),
             ),
-           kHeight2,
+            kHeight2,
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color:kColor,
+                  color: kColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -181,23 +166,23 @@ class _ShowStudentScreenState extends State<ShowStudentScreen> {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                   kHeight1,
+                    kHeight1,
                     Text(
-                      widget.studentModel.address,
+                      studentModel.address,
                       style: const TextStyle(fontSize: 26),
                     )
                   ],
                 ),
               ),
             ),
-          kHeight2,
+            kHeight2,
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color:kColor,
+                  color: kColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -208,23 +193,23 @@ class _ShowStudentScreenState extends State<ShowStudentScreen> {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                  kHeight1,
+                    kHeight1,
                     Text(
-                      widget.studentModel.phoneNumber.toString(),
+                      studentModel.phoneNumber.toString(),
                       style: const TextStyle(fontSize: 26),
                     )
                   ],
                 ),
               ),
             ),
-         kHeight2,
+            kHeight2,
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color:kColor ,
+                  color: kColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -235,9 +220,9 @@ class _ShowStudentScreenState extends State<ShowStudentScreen> {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                  kHeight1,
+                    kHeight1,
                     Text(
-                      widget.studentModel.email,
+                      studentModel.email,
                       style: const TextStyle(fontSize: 26),
                     )
                   ],

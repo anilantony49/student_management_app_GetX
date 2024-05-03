@@ -23,7 +23,7 @@ class SplashScreen extends StatelessWidget {
 
         // ),
       ),
-      nextScreen: const HomeScreen(),
+      nextScreen:  const HomeScreen(),
       splashTransition: SplashTransition.rotationTransition,
       backgroundColor: Colors.black,
     );

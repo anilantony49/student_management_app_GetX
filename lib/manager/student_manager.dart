@@ -2,16 +2,22 @@ import 'dart:io';
 import 'package:database_student/data_repository/dbHelper.dart';
 import 'package:database_student/model/student_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class StudentManager {
+class StudentManager extends GetxController {
   static final StudentManager _instance = StudentManager._internal();
 
   factory StudentManager() {
     return _instance;
   }
-  
-  StudentManager._internal() {  
+
+  StudentManager._internal() {
     getStudents();
+  }
+  RxBool isGridView = false.obs;
+  // List<StudentModel> allStudents = [].obs;
+  void toggleView() {
+    isGridView.value = !isGridView.value;
   }
 
   TextEditingController nameController = TextEditingController();
@@ -22,10 +28,24 @@ class StudentManager {
 
   File? image;
 
-  List<StudentModel> allStudents = [];
+
+  RxList<StudentModel> allStudents = <StudentModel>[].obs;
+
+  @override
+  void onInit() {
+    refresh();
+    super.onInit();
+  }
+
+  @override
+  Future<void> refresh() async {
+    final data = await DbHelper.dbHelper.getAllStudents();
+    allStudents.assignAll(data);
+  }
 
   Future<void> getStudents() async {
-    allStudents = await DbHelper.dbHelper.getAllStudents();
+    final data = await DbHelper.dbHelper.getAllStudents();
+    allStudents.assignAll(data);
   }
 
   void insertNewStudent() {
@@ -39,16 +59,19 @@ class StudentManager {
 
     DbHelper.dbHelper.insetNewStudent(studentModel);
 
+    refresh();
     // getStudents();
   }
 
   Future<void> updateStudent(StudentModel studentModel) async {
     await DbHelper.dbHelper.updateStudent(studentModel);
+    refresh();
     // getStudents();
   }
 
   void deleteStudents(StudentModel studentModel) {
     DbHelper.dbHelper.deleteStudent(studentModel);
+    refresh();
     // getStudents();
   }
 }

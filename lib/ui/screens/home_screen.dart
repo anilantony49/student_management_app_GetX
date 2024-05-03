@@ -1,76 +1,48 @@
-import 'package:database_student/data_repository/dbHelper.dart';
 import 'package:database_student/manager/student_manager.dart';
 import 'package:database_student/ui/screens/search_student_screen.dart';
 import 'package:database_student/ui/screens/widgets/popup_menu_button.dart';
 import 'package:database_student/ui/screens/widgets/student_grid_widget.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import 'widgets/student_list_widget.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _MainStudentScreenState();
-}
-
-class _MainStudentScreenState extends State<HomeScreen> {
-  bool isGridView = false;
-  void refresh() async {
-    final data = await DbHelper.dbHelper.getAllStudents();
-    setState(() {
-      StudentManager().allStudents = data;
-    });
-  }
-
-  void toogleView() {
-    setState(() {
-      isGridView = !isGridView;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    refresh();
-  }
+  final bool isGridView = false;
 
   @override
   Widget build(BuildContext context) {
-    StudentManager studentManager = StudentManager();
+    final StudentManager studentManager = Get.put(StudentManager());
+    // studentManager.refresh();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xC1C1C1C1),
         title: const Text('Students List'),
         actions: [
           InkWell(
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => SearchStudentScreen(
-                      students: studentManager.allStudents)),
-            ),
+            onTap: () => Get.to(() =>
+                SearchStudentScreen(students: studentManager.allStudents)),
             child: const Icon(Icons.search),
           ),
           IconButton(
-            onPressed: toogleView,
-            icon: isGridView
+            onPressed: studentManager.toggleView,
+            icon: Obx(() => studentManager.isGridView.value
                 ? const Icon(Icons.list)
-                : const Icon(Icons.grid_view),
+                : const Icon(Icons.grid_view)),
           ),
           const MyPopupMenuButton()
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        
         backgroundColor: const Color(0xC1C1C1C1),
         onPressed: () async {
-          await Navigator.pushNamed(context, '/new_student_screen');
-          Navigator.pushReplacementNamed(context, '/main_screen');
+          await Get.toNamed('/new_student_screen');
+          Get.offNamed('/main_screen');
         },
         child: const Icon(Icons.add),
       ),
-      
-      body: isGridView ? buildGridView() : buildListView(),
+      body: Obx(() =>
+          studentManager.isGridView.value ? buildGridView() : buildListView()),
     );
   }
 
