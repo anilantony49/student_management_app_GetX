@@ -1,6 +1,7 @@
 import 'package:database_student/model/student_model.dart';
 import 'package:database_student/ui/screens/show_student_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'constants.dart';
 
@@ -13,20 +14,14 @@ class StudentGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // StudentManager studentManager = StudentManager();
-
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ShowStudentScreen(studentModel: studentModel)));
+        Get.to(() => ShowStudentScreen(studentModel: studentModel));
       },
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(15.0),
         child: Card(
-          color:kColor,
+          color: kColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

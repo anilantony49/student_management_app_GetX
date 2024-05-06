@@ -30,27 +30,24 @@ class InitApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFF596157),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-        ),
-        useMaterial3: true,
+        scaffoldBackgroundColor:  const Color(0xFF596157),
       ),
       title: 'Student database app',
       home: const SplashScreen(),
       getPages: [
         GetPage(
           name: '/new_student_screen',
-          page: () =>   NewAndEditStudentScreen(isEditing: false,),
+          page: () => NewAndEditStudentScreen(
+            isEditing: false,
+          ),
           transition: Transition.fade,
         ),
         GetPage(
           name: '/main_screen',
-          page: () =>  const HomeScreen(),
+          page: () => const HomeScreen(),
           transition: Transition.fade,
         )
       ],
-      
     );
   }
 }

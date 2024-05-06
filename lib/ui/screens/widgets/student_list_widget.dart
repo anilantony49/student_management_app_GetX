@@ -2,6 +2,7 @@ import 'package:database_student/model/student_model.dart';
 
 import 'package:database_student/ui/screens/show_student_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'constants.dart';
 
@@ -14,15 +15,9 @@ class StudentListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // StudentManager studentManager = StudentManager();
-
     return InkWell(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ShowStudentScreen(studentModel: studentModel)));
+         Get.to(()=>ShowStudentScreen(studentModel: studentModel));
       },
       child: Container(
         height: 80,
@@ -31,7 +26,7 @@ class StudentListWidget extends StatelessWidget {
         ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
             child: ListTile(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),

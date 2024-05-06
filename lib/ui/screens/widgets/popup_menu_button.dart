@@ -2,14 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-class MyPopupMenuButton extends StatefulWidget {
+class MyPopupMenuButton extends StatelessWidget {
   const MyPopupMenuButton({super.key});
 
-  @override
-  State<MyPopupMenuButton> createState() => _MyPopupMenuButtonState();
-}
-
-class _MyPopupMenuButtonState extends State<MyPopupMenuButton> {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(

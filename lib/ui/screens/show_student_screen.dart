@@ -53,13 +53,7 @@ class ShowStudentScreen extends StatelessWidget {
                         TextButton(
                             onPressed: () {
                               StudentManager().deleteStudents(studentModel);
-                              // refresh();
                               Get.to(const HomeScreen());
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             const HomeScreen()));
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
                                 content: Text('Delete succesfully'),
@@ -91,41 +85,41 @@ class ShowStudentScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: kColor,
-                borderRadius: BorderRadius.circular(5),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              kHeight2,
+              Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                decoration: BoxDecoration(
+                  color: kColor,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                height: 170,
+                child: studentModel.image == null ||
+                        studentModel.image!.path.isEmpty
+                    ? const Center(
+                        child: CircleAvatar(
+                          radius: 40,
+                          backgroundImage:
+                              AssetImage('assets/images/blank profile.jpg'),
+                        ),
+                      )
+                    : Image.file(studentModel.image!),
               ),
-              height: 170,
-              child:
-                  studentModel.image == null || studentModel.image!.path.isEmpty
-                      ? const Center(
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundImage:
-                                AssetImage('assets/images/blank profile.jpg'),
-                          ),
-                        )
-                      : Image.file(studentModel.image!),
-            ),
-            kHeight2,
-            Center(
-              child: Text(
-                studentModel.name,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              kHeight2,
+              Center(
+                child: Text(
+                  studentModel.name,
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            kHeight1,
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
+              kHeight1,
+              Container(
                 padding: const EdgeInsets.all(10),
-                // width: 500,
-                // margin: EdgeInsets.symmetric(horizontal: 50),
                 decoration: BoxDecoration(
                   color: kColor,
                   borderRadius: BorderRadius.circular(10),
@@ -147,11 +141,8 @@ class ShowStudentScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-            kHeight2,
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
+              kHeight2,
+              Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -174,11 +165,8 @@ class ShowStudentScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-            kHeight2,
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
+              kHeight2,
+              Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -201,11 +189,8 @@ class ShowStudentScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-            kHeight2,
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
+              kHeight2,
+              Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -227,9 +212,9 @@ class ShowStudentScreen extends StatelessWidget {
                     )
                   ],
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
