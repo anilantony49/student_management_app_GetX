@@ -26,6 +26,9 @@ class NewAndEditStudentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isEditing && studentModel?.image != null) {
+      image.value = studentModel!.image;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xC1C1C1C1),
@@ -46,16 +49,16 @@ class NewAndEditStudentScreen extends StatelessWidget {
                     onTap: () {
                       pickImage(context, ImageSource.camera);
                     },
-                    child: CircleAvatar(
-                      backgroundColor: const Color(0xC1C1C1C1),
-                      radius: 70,
-                      backgroundImage: studentManager.image != null
-                          ? FileImage(studentManager.image!)
-                          : null,
-                      child: studentManager.image == null
-                          ? const Icon(Icons.person, size: 50)
-                          : null,
-                    ),
+                    child: Obx(() => CircleAvatar(
+                          backgroundColor: const Color(0xC1C1C1C1),
+                          radius: 70,
+                          backgroundImage: image.value != null
+                              ? FileImage(image.value!)
+                              : null,
+                          child: image.value == null
+                              ? const Icon(Icons.person, size: 50)
+                              : null,
+                        )),
                   ),
                   kHeight2,
                   TextFormField(

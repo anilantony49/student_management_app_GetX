@@ -1,3 +1,4 @@
+
 import 'package:database_student/model/student_model.dart';
 import 'package:database_student/manager/student_manager.dart';
 import 'package:database_student/ui/screens/home_screen.dart';
@@ -26,8 +27,7 @@ class ShowStudentScreen extends StatelessWidget {
               studentManager.phoneNumberController.text =
                   studentModel.phoneNumber.toString();
               studentManager.emailController.text = studentModel.email;
-
-              studentManager.image = studentModel.image!;
+              studentManager.image = studentModel.image;
 
               Get.to(() => NewAndEditStudentScreen(
                     studentModel: studentModel,
@@ -53,7 +53,7 @@ class ShowStudentScreen extends StatelessWidget {
                         TextButton(
                             onPressed: () {
                               StudentManager().deleteStudents(studentModel);
-                              Get.to(const HomeScreen());
+                              Get.to(() => const HomeScreen());
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
                                 content: Text('Delete succesfully'),
